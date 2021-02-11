@@ -37,12 +37,19 @@ CAENHVWrapperSim_SYS_LIBS_WIN32 += ws2_32
 #======================================================
 
 USR_INCLUDES = $(addprefix -I,$(CAENHVWRAPPER_INCLUDE))
+ifneq ($(findstring linux,$(EPICS_HOST_ARCH)),)
+USR_LDFLAGS += -L$(CAENHVWRAPPER_LIB)
+endif
+
 caenhvwrapper_DIR = $(CAENHVWRAPPER_LIB)
-CAENHVAsyn_LIBS_Linux += caenhvwrapper
+CAENHVAsyn_SYS_LIBS_Linux += caenhvwrapper
 CAENHVAsyn_LIBS_WIN32 += caenhvwrapper
 
 BIN_INSTALLS_WIN32 += $(wildcard $(CAENHVWRAPPER_DLL)/*.dll)
 LIB_INSTALLS_WIN32 += $(wildcard $(CAENHVWRAPPER_LIB)/*.lib)
+
+BIN_INSTALLS_Linux += $(wildcard $(CAENHVWRAPPER_LIB)/*.so.*)
+LIB_INSTALLS_Linux += $(wildcard $(CAENHVWRAPPER_LIB)/*.so)
 
 #===========================
 
