@@ -22,7 +22,7 @@ CAENHVAsyn_SRCS += board_parameter.cpp
 CAENHVAsyn_SRCS += channel.cpp
 CAENHVAsyn_SRCS += channel_parameter.cpp
 CAENHVAsyn_LIBS += asyn
-CAENHVAsyn_LIBS_WIN32 += $(EPICS_BASE_IOC_LIBS)
+CAENHVAsyn_LIBS += $(EPICS_BASE_IOC_LIBS)
 CAENHVAsyn_SYS_LIBS_WIN32 += ws2_32
 
 ## this library can be used to replace caenhvwrapper shared library
