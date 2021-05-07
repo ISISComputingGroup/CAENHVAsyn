@@ -79,6 +79,7 @@ public:
 
     virtual T    getVal()        const;
     virtual void setVal(T value) const;
+    virtual std::string    getValOrErrorString()        const;
 
 protected:
     int         handle;
