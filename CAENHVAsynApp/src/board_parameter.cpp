@@ -83,9 +83,15 @@ void BoardParameterBase<T>::setVal(T value) const
 template<typename T>
 void BoardParameterBase<T>::printInfo(std::ostream& stream) const
 {
+    std::string value;
+    try {
+        value = std::string(getVal());
+    } catch(std::runtime_error& e) {
+        value = "error unavailable";
+    }
     stream << "        Param = "     << param \
            << ", Mode = "            << modeStr \
-           << ", Value = " << getVal() \
+           << ", Value = " << value \
            << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
