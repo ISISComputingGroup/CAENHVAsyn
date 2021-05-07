@@ -101,7 +101,6 @@ void ChannelParameterBase<T>::setVal(T value) const
 template<typename T>
 void ChannelParameterBase<T>::printInfo(std::ostream& stream) const
 {
-    
     stream << "          Param = "   << param \
            << ", Mode  = "           << modeStr \
            << ", Value = "           << getValOrErrorString() \
