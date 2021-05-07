@@ -51,7 +51,7 @@ void ICrate::GetPropList()
                 if (PropMode == SYSPROP_MODE_RDWR) {
                     PropMode = SYSPROP_MODE_RDONLY;
                 } else if (PropMode == SYSPROP_MODE_WRONLY) {
-                    break;
+                    continue;
                 }
             }
             switch( PropType )
