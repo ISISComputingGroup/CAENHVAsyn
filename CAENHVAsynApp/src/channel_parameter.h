@@ -75,11 +75,10 @@ public:
     std::string getEpicsRecordName() { return epicsRecordName; };
     std::string getEpicsDesc()       { return epicsDesc;       };
 
-    virtual void printInfo(std::ostream& stream) const;
-
+    virtual void printInfo(std::ostream& stream)        const;
+    virtual void printValOrError(std::ostream& stream)  const;
     virtual T    getVal()        const;
     virtual void setVal(T value) const;
-    virtual std::string    getValOrErrorString()        const;
 
 protected:
     int         handle;

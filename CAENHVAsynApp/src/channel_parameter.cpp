@@ -75,15 +75,14 @@ T ChannelParameterBase<T>::getVal() const
 }
 
 template<typename T>
-std::string ChannelParameterBase<T>::getValOrErrorString() const
+void ChannelParameterBase<T>::printValOrError(std::ostream& stream) const
 {
-    std::string value;
     try {
-        value = std::string(getVal());
+        T value = getVal();
+        stream << value;
     } catch(std::runtime_error& e) {
-        value = "error unavailable";
+        stream << "error unavailable";
     }
-    return value;
 }
 
 
@@ -103,8 +102,9 @@ void ChannelParameterBase<T>::printInfo(std::ostream& stream) const
 {
     stream << "          Param = "   << param \
            << ", Mode  = "           << modeStr \
-           << ", Value = "           << getValOrErrorString() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
@@ -150,8 +150,9 @@ void IChannelParameterNumeric::printInfo(std::ostream& stream) const
            << ", Minval = "          << getMinVal() \
            << ", Maxval = "          <<  getMaxVal() \
            << ", Units = "           << units.c_str() \
-           << ", Value = "           << getValOrErrorString() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
@@ -186,8 +187,9 @@ void IChannelParameterOnOff::printInfo(std::ostream& stream) const
            << ", Mode = "            << modeStr \
            << ", On state = "        << getOnState() \
            << ", Off state = "       << getOffState() \
-           << ", Value = "           << getValOrErrorString() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
@@ -208,8 +210,9 @@ void IChannelParameterChStatus::printInfo(std::ostream& stream) const
 {
     stream << "          Param = "   << param \
            << ", Mode  = "           << modeStr \
-           << ", Value = "           << getValOrErrorString() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
@@ -230,8 +233,9 @@ void IChannelParameterBinary::printInfo(std::ostream& stream) const
 {
     stream << "          Param = "   << param \
            << ", Mode  = "           << modeStr \
-           << ", Value = "           << getValOrErrorString() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
