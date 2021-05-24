@@ -102,12 +102,12 @@ void IChannel::GetChannelParams()
         uint32_t type, mode;
 
         if ( CAENHV_GetChParamProp(handle, slot, channel, p[i], "Type", &type) != CAENHV_OK ) {
-            std::cerr << "CAENHV_GetChParamProp failed: " << std::string(CAENHV_GetError(handle)) << std::endl;
+            std::cerr << "CAENHV_GetChParamProp (param " << p[i] << ") failed: " << CAENHV_GetError(handle) << std::endl;
             continue;
         }
 
         if (CAENHV_GetChParamProp(handle, slot, channel, p[i], "Mode", &mode) != CAENHV_OK ) {
-            std::cerr << "CAENHV_GetChParamProp failed: " << std::string(CAENHV_GetError(handle)) << std::endl;
+            std::cerr << "CAENHV_GetChParamProp (param " << p[i] << ") failed: " << CAENHV_GetError(handle) << std::endl;
             continue;
         }
 
