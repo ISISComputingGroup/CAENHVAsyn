@@ -81,7 +81,7 @@ void ChannelParameterBase<T>::printValOrError(std::ostream& stream) const
         T value = getVal();
         stream << value;
     } catch(std::runtime_error& e) {
-        stream << "error unavailable";
+        stream << "error unavailable (" << e.what() << ")";
     }
 }
 
