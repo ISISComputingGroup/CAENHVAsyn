@@ -112,12 +112,12 @@ void IBoard::GetBoardParams()
         uint32_t type, mode;
 
         if ( CAENHV_GetBdParamProp(handle, slot, p[i], "Type", &type) != CAENHV_OK ) {
-            std::cerr << "CAENHV_GetBdParamProp failed: " << std::string(CAENHV_GetError(handle)) << std::endl;
+            std::cerr << "CAENHV_GetBdParamProp failed for param '" << p[i] << "': " << std::string(CAENHV_GetError(handle)) << std::endl;
             continue;
         }  
 
         if (CAENHV_GetBdParamProp(handle, slot, p[i], "Mode", &mode) != CAENHV_OK ) {
-            std::cerr << "CAENHV_GetBdParamProp failed: " << std::string(CAENHV_GetError(handle)) << std::endl;
+            std::cerr << "CAENHV_GetBdParamProp failed for param '" << p[i] << "': " << std::string(CAENHV_GetError(handle)) << std::endl;
             continue;
         }
 
