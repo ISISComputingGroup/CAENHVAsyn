@@ -101,32 +101,39 @@ void IChannel::GetChannelParams()
 
         uint32_t type, mode;
 
-        if ( CAENHV_GetChParamProp(handle, slot, channel, p[i], "Type", &type) != CAENHV_OK )
-            throw std::runtime_error("CAENHV_GetChParamProp failed: " + std::string(CAENHV_GetError(handle)));
+        if ( CAENHV_GetChParamProp(handle, slot, channel, p[i], "Type", &type) != CAENHV_OK ) {
+            std::cerr << "CAENHV_GetChParamProp (param " << p[i] << ") failed: " << CAENHV_GetError(handle) << std::endl;
+            continue;
+        }
 
-        if (CAENHV_GetChParamProp(handle, slot, channel, p[i], "Mode", &mode) != CAENHV_OK )
-            throw std::runtime_error("CAENHV_GetChParamProp failed: " + std::string(CAENHV_GetError(handle)));
+        if (CAENHV_GetChParamProp(handle, slot, channel, p[i], "Mode", &mode) != CAENHV_OK ) {
+            std::cerr << "CAENHV_GetChParamProp (param " << p[i] << ") failed: " << CAENHV_GetError(handle) << std::endl;
+            continue;
+        }
 
         if (readOnly) {
             if (mode == PARAM_MODE_RDWR) {
                 mode = PARAM_MODE_RDONLY;
             }
             else if (mode == PARAM_MODE_WRONLY) {
-                break;
+                continue;
             }
         }
 
-        if (type == PARAM_TYPE_NUMERIC)
-            channelParameterNumerics.push_back( IChannelParameterNumeric::create(handle, slot, channel, p[i], mode) );
-        else if (type == PARAM_TYPE_ONOFF)
-            channelParameterOnOffs.push_back( IChannelParameterOnOff::create(handle, slot, channel, p[i], mode) );
-        else if (type == PARAM_TYPE_CHSTATUS)
-            channelParameterChStatuses.push_back( IChannelParameterChStatus::create(handle, slot, channel, p[i], mode) );
-        else if (type == PARAM_TYPE_BINARY)
-            channelParameterBinaries.push_back( IChannelParameterBinary::create(handle, slot, channel, p[i], mode) );
-        else
-            //throw std::runtime_error("Parameter type not  supported!");
-            std::cerr << "Error found when creating a Board Parameter object for pamater '" << p[i] << "'. Unsupported type = " << type << std::endl;
+        try {
+            if (type == PARAM_TYPE_NUMERIC)
+                channelParameterNumerics.push_back( IChannelParameterNumeric::create(handle, slot, channel, p[i], mode) );
+            else if (type == PARAM_TYPE_ONOFF)
+                channelParameterOnOffs.push_back( IChannelParameterOnOff::create(handle, slot, channel, p[i], mode) );
+            else if (type == PARAM_TYPE_CHSTATUS)
+                channelParameterChStatuses.push_back( IChannelParameterChStatus::create(handle, slot, channel, p[i], mode) );
+            else if (type == PARAM_TYPE_BINARY)
+                channelParameterBinaries.push_back( IChannelParameterBinary::create(handle, slot, channel, p[i], mode) );
+            else
+                std::cerr << "Error found when creating a Channel Parameter object for pamater '" << p[i] << "'. Unsupported type = " << type << std::endl;
+        } catch(std::runtime_error& e) {
+            std::cerr << "Error found when creating a Channel Parameter object for parameter '" << p[i] << "'. " << e.what() << std::endl;
+        }
     }
 
     // Memory allocated across CRTs can cause issues on Windows
