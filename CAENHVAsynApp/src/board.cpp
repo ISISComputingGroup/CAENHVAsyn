@@ -111,31 +111,38 @@ void IBoard::GetBoardParams()
     {
         uint32_t type, mode;
 
-        if ( CAENHV_GetBdParamProp(handle, slot, p[i], "Type", &type) != CAENHV_OK )
-            throw std::runtime_error("CAENHV_GetBdParamProp failed: " + std::string(CAENHV_GetError(handle)));
+        if ( CAENHV_GetBdParamProp(handle, slot, p[i], "Type", &type) != CAENHV_OK ) {
+            std::cerr << "CAENHV_GetBdParamProp failed for param '" << p[i] << "': " << std::string(CAENHV_GetError(handle)) << std::endl;
+            continue;
+        }  
 
-        if (CAENHV_GetBdParamProp(handle, slot, p[i], "Mode", &mode) != CAENHV_OK )
-            throw std::runtime_error("CAENHV_GetBdParamProp failed: " + std::string(CAENHV_GetError(handle)));
+        if (CAENHV_GetBdParamProp(handle, slot, p[i], "Mode", &mode) != CAENHV_OK ) {
+            std::cerr << "CAENHV_GetBdParamProp failed for param '" << p[i] << "': " << std::string(CAENHV_GetError(handle)) << std::endl;
+            continue;
+        }
 
         if (readOnly) {
             if (mode == PARAM_MODE_RDWR) {
                 mode = PARAM_MODE_RDONLY;
             } else if (mode == PARAM_MODE_WRONLY) {
-                break;
+                continue;
             }
         }
 
-        if (type == PARAM_TYPE_NUMERIC)
-            boardParameterNumerics.push_back( IBoardParameterNumeric::create(handle, slot, p[i], mode));
-        else if (type == PARAM_TYPE_ONOFF)
-            boardParameterOnOffs.push_back( IBoardParameterOnOff::create(handle, slot, p[i], mode));
-        else if (type == PARAM_TYPE_CHSTATUS)
-            boardParameterChStatuses.push_back( IBoardParameterChStatus::create(handle, slot, p[i], mode));
-        else if (type == PARAM_TYPE_BDSTATUS)
-            boardParameterBdStatuses.push_back( IBoardParameterBdStatus::create(handle, slot, p[i], mode));
-        else
-            //throw std::runtime_error("Parameter type not  supported!");
-            std::cerr << "Error found when creating a Board Parameter object for pamater '" << p[i] << "'. Unsupported type = " << type << std::endl;
+        try {
+            if (type == PARAM_TYPE_NUMERIC)
+                boardParameterNumerics.push_back( IBoardParameterNumeric::create(handle, slot, p[i], mode));
+            else if (type == PARAM_TYPE_ONOFF)
+                boardParameterOnOffs.push_back( IBoardParameterOnOff::create(handle, slot, p[i], mode));
+            else if (type == PARAM_TYPE_CHSTATUS)
+                boardParameterChStatuses.push_back( IBoardParameterChStatus::create(handle, slot, p[i], mode));
+            else if (type == PARAM_TYPE_BDSTATUS)
+                boardParameterBdStatuses.push_back( IBoardParameterBdStatus::create(handle, slot, p[i], mode));
+            else
+                std::cerr << "Error found when creating a Board Parameter object for parameter '" << p[i] << "'. Unsupported type = " << type << std::endl;
+        } catch(std::runtime_error& e) {
+            std::cerr << "Error found when creating a Board Parameter object for parameter '" << p[i] << "'. " << e.what() << std::endl;
+        }
     }
 
     // Memory allocated across CRTs can cause issues on Windows

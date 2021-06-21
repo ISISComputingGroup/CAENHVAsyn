@@ -54,7 +54,7 @@ std::string processMode(uint32_t mode)
         return  "?";
 }
 
-std::string processUnits(uint16_t units, int8_t exp)
+std::string processUnits(uint16_t units, int16_t exp)
 {
     std::string temp_units;
 

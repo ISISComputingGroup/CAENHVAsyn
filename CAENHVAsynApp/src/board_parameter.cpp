@@ -80,13 +80,26 @@ void BoardParameterBase<T>::setVal(T value) const
     if ( CAENHV_SetBdParam(handle, 1, &tempSlot, param.c_str(), &value) != CAENHV_OK )
            throw std::runtime_error("CAENHV_GetBdParamProp failed: " + std::string(CAENHV_GetError(handle)));
 }
+
+template<typename T>
+void BoardParameterBase<T>::printValOrError(std::ostream& stream) const
+{
+    try {
+        T value = getVal();
+        stream << value;
+    } catch(std::runtime_error& e) {
+        stream << "error unavailable";
+    }
+}
+
 template<typename T>
 void BoardParameterBase<T>::printInfo(std::ostream& stream) const
 {
     stream << "        Param = "     << param \
            << ", Mode = "            << modeStr \
-           << ", Value = " << getVal() \
-           << ", epicsParamName = "  << epicsParamName \
+           << ", Value = ";
+    printValOrError(stream);
+    stream << ", epicsParamName = "  << epicsParamName \
            << ", epicsRecordName = " << epicsRecordName \
            << std::endl;
 }
@@ -118,7 +131,7 @@ IBoardParameterNumeric::IBoardParameterNumeric(int h, std::size_t s, const std::
    if ( CAENHV_GetBdParamProp(handle, slot, param.c_str(), "Unit", &u ) != CAENHV_OK )
        throw std::runtime_error("CAENHV_GetBdParamProp failed: " + std::string(CAENHV_GetError(handle)));
 
-   int8_t e;
+   int16_t e;
    if ( CAENHV_GetBdParamProp(handle, slot, param.c_str(), "Exp", &e ) != CAENHV_OK )
        throw std::runtime_error("CAENHV_GetBdParamProp failed: " + std::string(CAENHV_GetError(handle)));
 
