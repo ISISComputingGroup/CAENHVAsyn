@@ -213,7 +213,7 @@ IBoardParameterReadOnlyString::IBoardParameterReadOnlyString(int h, std::size_t 
 :
     BoardParameterBase<std::string>(h, s, p, PARAM_MODE_RDONLY)
 {
-    val = val;
+    this->val = val;
 }
 
 BoardParameterReadOnlyString IBoardParameterReadOnlyString::create(int h, std::size_t s, const std::string&  p, std::string val)
@@ -226,7 +226,7 @@ IBoardParameterReadOnlySizeT::IBoardParameterReadOnlySizeT(int h, std::size_t s,
 :
     BoardParameterBase<std::size_t>(h, s, p, PARAM_MODE_RDONLY)
 {
-    val = val;
+    this->val = val;
 }
 
 BoardParameterReadOnlySizeT IBoardParameterReadOnlySizeT::create(int h, std::size_t s, const std::string&  p, std::size_t val)

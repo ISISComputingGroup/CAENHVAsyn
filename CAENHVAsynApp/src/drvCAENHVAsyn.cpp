@@ -491,8 +491,9 @@ asynStatus CAENHVAsyn::readInt32(asynUser *pasynUser, epicsInt32 *value)
     getParamName(addr, function, &name);
 
     // Iterators
-    std::map< int, ChannelParameterBinary >::iterator cpIt;
-    std::map< int, SystemPropertyInteger >::iterator spIt;
+    std::map< int, BoardParameterReadOnlySizeT  >::iterator bprostIt;
+    std::map< int, ChannelParameterBinary       >::iterator cpIt;
+    std::map< int, SystemPropertyInteger        >::iterator spIt;
 
     // Check if the function is found in out lists
     bool found = false;
@@ -504,6 +505,11 @@ asynStatus CAENHVAsyn::readInt32(asynUser *pasynUser, epicsInt32 *value)
         {
             *value = cpIt->second->getVal();
             found = true;
+        }
+        else if ( ( bprostIt = boardParameterReadOnlySizeTList.find(function) ) != boardParameterReadOnlySizeTList.end() )
+        {
+           *value = bprostIt->second->getVal();
+           found = true;
         }
         else if ( ( spIt = systemPropertyIntegerList.find(function) ) != systemPropertyIntegerList.end() )
         {
@@ -938,8 +944,9 @@ asynStatus CAENHVAsyn::readOctet(asynUser *pasynUser, char *value, size_t maxCha
     getParamName(addr, function, &name);
 
     // Iterators
-    std::map< int, SystemPropertyString   >::iterator spIt;
-    std::map< int, ChannelParameterString >::iterator cpIt;
+    std::map< int, SystemPropertyString           >::iterator spIt;
+    std::map< int, BoardParameterReadOnlyString   >::iterator bpIt;
+    std::map< int, ChannelParameterString         >::iterator cpIt;
 
     // Check if the function is found in out lists
     bool found = false;
@@ -951,6 +958,12 @@ asynStatus CAENHVAsyn::readOctet(asynUser *pasynUser, char *value, size_t maxCha
         if ( ( spIt = systemPropertyStringList.find(function) ) != systemPropertyStringList.end() )
         {
             temp = spIt->second->getVal();
+            found = true;
+        }
+
+        if ( ( bpIt = boardParameterReadOnlyStringList.find(function)) != boardParameterReadOnlyStringList.end() )
+        {
+            temp = bpIt->second->getVal();
             found = true;
         }
 
