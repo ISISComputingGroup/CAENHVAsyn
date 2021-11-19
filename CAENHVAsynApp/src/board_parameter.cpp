@@ -207,3 +207,16 @@ BoardParameterBdStatus IBoardParameterBdStatus::create(int h, std::size_t s, con
 {
     return std::make_shared<IBoardParameterBdStatus>(h, s, p, m);
 }
+
+// Class for String parameters that have a read only value
+IBoardParameterReadOnlyString::IBoardParameterReadOnlyString(int h, std::size_t s, const std::string&  p, std::string val)
+:
+    BoardParameterBase<std::string>(h, s, p, PARAM_MODE_RDONLY)
+{
+    val = val;
+}
+
+BoardParameterReadOnlyString IBoardParameterReadOnlyString::create(int h, std::size_t s, const std::string&  p, std::string val)
+{
+    return std::make_shared<IBoardParameterReadOnlyString>(h, s, p, val);
+}

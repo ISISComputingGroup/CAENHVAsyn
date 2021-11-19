@@ -100,6 +100,9 @@ void IBoard::GetBoardParams()
 
     if ( r != CAENHV_OK )
         return;
+    
+    // Get the model of the board
+    boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "MODEL", model) );
 
     char (*p)[MAX_PARAM_NAME];
     p = (char (*)[MAX_PARAM_NAME])ParNameList;
