@@ -54,12 +54,16 @@ class IBoardParameterNumeric;
 class IBoardParameterOnOff;
 class IBoardParameterChStatus;
 class IBoardParameterBdStatus;
+class IBoardParameterReadOnlyString;
+class IBoardParameterReadOnlySizeT;
 
 // Shared pointer types
 typedef std::shared_ptr< IBoardParameterNumeric  > BoardParameterNumeric;
 typedef std::shared_ptr< IBoardParameterOnOff    > BoardParameterOnOff;
 typedef std::shared_ptr< IBoardParameterChStatus > BoardParameterChStatus;
 typedef std::shared_ptr< IBoardParameterBdStatus > BoardParameterBdStatus;
+typedef std::shared_ptr< IBoardParameterReadOnlyString > BoardParameterReadOnlyString;
+typedef std::shared_ptr< IBoardParameterReadOnlySizeT > BoardParameterReadOnlySizeT;
 
 // Base class for all parameter types
 template<typename T>
@@ -152,6 +156,38 @@ public:
 
     // Factory method
     static BoardParameterBdStatus create(int h, std::size_t s, const std::string&  p, uint32_t m);
+};
+
+// Class for String parameters
+class IBoardParameterReadOnlyString: public BoardParameterBase<std::string>
+{
+public:
+    IBoardParameterReadOnlyString(int h, std::size_t s, const std::string&  p, std::string val);
+    virtual ~IBoardParameterReadOnlyString() {};
+
+    // Factory method
+    static BoardParameterReadOnlyString create(int h, std::size_t s, const std::string&  p, std::string val);
+
+    std::string getVal() const { return val; };
+
+private:
+    std::string val;
+};
+
+// Class for String parameters
+class IBoardParameterReadOnlySizeT: public BoardParameterBase<std::size_t>
+{
+public:
+    IBoardParameterReadOnlySizeT(int h, std::size_t s, const std::string&  p, std::size_t val);
+    virtual ~IBoardParameterReadOnlySizeT() {};
+
+    // Factory method
+    static BoardParameterReadOnlySizeT create(int h, std::size_t s, const std::string&  p, std::size_t val);
+
+    std::size_t getVal() const { return val; };
+
+private:
+    std::size_t val;
 };
 
 #endif

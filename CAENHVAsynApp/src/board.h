@@ -64,11 +64,13 @@ public:
     void printInfo(std::ostream& stream) const;
     void printBoardInfo(std::ostream& stream) const;
 
-    std::vector<BoardParameterNumeric>  getBoardParameterNumerics()   { return boardParameterNumerics;   };
-    std::vector<BoardParameterOnOff>    getBoardParameterOnOffs()     { return boardParameterOnOffs;     };
-    std::vector<BoardParameterChStatus> getBoardParameterChStatuses() { return boardParameterChStatuses; };
-    std::vector<BoardParameterBdStatus> getBoardParameterBdStatuses() { return boardParameterBdStatuses; };
-    std::vector<Channel>                getChannels()                 { return channels;                 };
+    std::vector<BoardParameterReadOnlySizeT>    getBoardParameterReadOnlySizeTs()    { return boardParameterReadOnlySizeTs;   };
+    std::vector<BoardParameterReadOnlyString>   getBoardParameterReadOnlyStrings()    { return boardParameterReadOnlyStrings;   };
+    std::vector<BoardParameterNumeric>          getBoardParameterNumerics()   { return boardParameterNumerics;          };
+    std::vector<BoardParameterOnOff>            getBoardParameterOnOffs()     { return boardParameterOnOffs;            };
+    std::vector<BoardParameterChStatus>         getBoardParameterChStatuses() { return boardParameterChStatuses;        };
+    std::vector<BoardParameterBdStatus>         getBoardParameterBdStatuses() { return boardParameterBdStatuses;        };
+    std::vector<Channel>                        getChannels()                 { return channels;                        };
 
 private:
 
@@ -84,10 +86,12 @@ private:
     std::string                 firmwareRelease;
     bool                        readOnly;
 
-    std::vector<BoardParameterNumeric>  boardParameterNumerics;
-    std::vector<BoardParameterOnOff>    boardParameterOnOffs;
-    std::vector<BoardParameterChStatus> boardParameterChStatuses;
-    std::vector<BoardParameterBdStatus> boardParameterBdStatuses;
+    std::vector<BoardParameterReadOnlySizeT>    boardParameterReadOnlySizeTs;
+    std::vector<BoardParameterReadOnlyString>   boardParameterReadOnlyStrings;
+    std::vector<BoardParameterNumeric>          boardParameterNumerics;
+    std::vector<BoardParameterOnOff>            boardParameterOnOffs;
+    std::vector<BoardParameterChStatus>         boardParameterChStatuses;
+    std::vector<BoardParameterBdStatus>         boardParameterBdStatuses;
 
     std::vector<Channel> channels;
 };
