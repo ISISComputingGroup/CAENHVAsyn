@@ -418,6 +418,11 @@ CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::s
 
     for (std::vector<Board>::iterator boardIt = b.begin(); boardIt != b.end(); ++boardIt)
     {
+        std::vector<BoardParameterReadOnlySizeT> prosts = (*boardIt)->getBoardParameterReadOnlySizeTs();
+
+        for (std::vector<BoardParameterReadOnlySizeT>::iterator paramIt = prosts.begin(); paramIt != prosts.end(); ++paramIt)
+            createParamInteger<BoardParameterReadOnlySizeT>(*paramIt, boardParameterReadOnlySizeTList);
+        
         std::vector<BoardParameterReadOnlyString> pros = (*boardIt)->getBoardParameterReadOnlyStrings();
 
         for (std::vector<BoardParameterReadOnlyString>::iterator paramIt = pros.begin(); paramIt != pros.end(); ++paramIt)

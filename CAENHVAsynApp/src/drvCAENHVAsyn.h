@@ -170,6 +170,7 @@ class CAENHVAsyn : public asynPortDriver
        std::map<int, SystemPropertyFloat>   systemPropertyFloatList;
 
        // Board parameter lists
+       std::map<int, BoardParameterReadOnlySizeT>  boardParameterReadOnlySizeTList;
        std::map<int, BoardParameterReadOnlyString>  boardParameterReadOnlyStringList;
        std::map<int, BoardParameterNumeric>  boardParameterNumericList;
        std::map<int, BoardParameterOnOff>    boardParameterOnOffList;

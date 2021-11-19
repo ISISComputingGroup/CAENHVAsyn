@@ -64,6 +64,7 @@ public:
     void printInfo(std::ostream& stream) const;
     void printBoardInfo(std::ostream& stream) const;
 
+    std::vector<BoardParameterReadOnlySizeT>    getBoardParameterReadOnlySizeTs()    { return boardParameterReadOnlySizeTs;   };
     std::vector<BoardParameterReadOnlyString>   getBoardParameterReadOnlyStrings()    { return boardParameterReadOnlyStrings;   };
     std::vector<BoardParameterNumeric>          getBoardParameterNumerics()   { return boardParameterNumerics;          };
     std::vector<BoardParameterOnOff>            getBoardParameterOnOffs()     { return boardParameterOnOffs;            };
@@ -85,6 +86,7 @@ private:
     std::string                 firmwareRelease;
     bool                        readOnly;
 
+    std::vector<BoardParameterReadOnlySizeT>    boardParameterReadOnlySizeTs;
     std::vector<BoardParameterReadOnlyString>   boardParameterReadOnlyStrings;
     std::vector<BoardParameterNumeric>          boardParameterNumerics;
     std::vector<BoardParameterOnOff>            boardParameterOnOffs;
