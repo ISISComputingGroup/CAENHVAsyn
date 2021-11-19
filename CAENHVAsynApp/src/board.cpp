@@ -105,7 +105,7 @@ void IBoard::GetBoardParams()
     boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "MODEL", model) );
     boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "FWRELEASE", firmwareRelease) );
     boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "SERIALNUM", serialNumber) );
-    boardParameterReadOnlySizeTs.push_back( IBoardParameterNumeric::create(handle, slot, "NUMOFCHANS", numChannels) );
+    boardParameterReadOnlySizeTs.push_back( IBoardParameterReadOnlySizeT::create(handle, slot, "NUMOFCHANS", numChannels) );
 
     char (*p)[MAX_PARAM_NAME];
     p = (char (*)[MAX_PARAM_NAME])ParNameList;
