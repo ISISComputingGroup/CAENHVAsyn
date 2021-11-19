@@ -104,7 +104,7 @@ void IBoard::GetBoardParams()
     // Get the model, firmware release, serial number and number of channels of the board
     boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "MODEL", model) );
     boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "FWRELEASE", firmwareRelease) );
-    boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "SERIALNUM", model) );
+    boardParameterReadOnlyStrings.push_back( IBoardParameterReadOnlyString::create(handle, slot, "SERIALNUM", serialNumber) );
     boardParameterReadOnlySizeTs.push_back( IBoardParameterNumeric::create(handle, slot, "NUMOFCHANS", numChannels) );
 
     char (*p)[MAX_PARAM_NAME];
