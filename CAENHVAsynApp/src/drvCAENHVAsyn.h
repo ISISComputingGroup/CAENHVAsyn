@@ -61,7 +61,8 @@
 #include "common.h"
 #include "crate.h"
 
-#define MAX_SIGNALS (3)
+// MAX_CRATES from vendor CAENHvwrapper.h
+#define MAX_SIGNALS (MAX_CRATES - 1)
 #define NUM_PARAMS (1500)
 
 // Map used to generated binary records for system parameters of type 'PARAM_TYPE_CHSTATUS'.
@@ -160,6 +161,7 @@ class CAENHVAsyn : public asynPortDriver
 
         const std::string driverName_;
         std::string portName_;
+        std::string iocName_;
 
         // Crate object
         Crate crate;

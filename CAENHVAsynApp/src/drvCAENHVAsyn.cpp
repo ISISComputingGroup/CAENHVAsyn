@@ -32,7 +32,6 @@ std::string CAENHVAsyn::crateInfoFilePath = "";
 std::string CAENHVAsyn::crateInfoFilePath = "/tmp/";
 #endif
 
-
 template <typename T>
 void CAENHVAsyn::createParamFloat(T p, std::map<int, T>& list)
 {
@@ -346,6 +345,7 @@ CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::s
     driverName_("CAENHVAsyn"),
     portName_(portName)
 {
+    iocName_ = (getenv("IOC") != NULL ? getenv("IOC") : ""); // IOC set in envPaths
     // Check parameters
     if ( portName_.empty() )
         throw std::runtime_error("The port name must be defined");
@@ -380,7 +380,7 @@ CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::s
     // Print Crate information to a temporal file
     // This need to be reimplemented using RAII...
     // Also, the user should be able to override the output location
-    std::string infoFileName(crateInfoFilePath + this->driverName_ + "_" + this->portName_ + "_crateInfo.txt");
+    std::string infoFileName(crateInfoFilePath + this->iocName_ + "_" +this->driverName_ + "_" + this->portName_ + "_crateInfo.txt");
     std::ofstream infoFile;
 
     std::cout << "Dumping crate information on '" << infoFileName << "'... ";
