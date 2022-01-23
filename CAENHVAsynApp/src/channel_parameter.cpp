@@ -269,9 +269,10 @@ std::string IChannelName::getVal() const
     char name_char[MAX_CH_NAME];
 
     uint16_t tempChan = channel;
-    if (CAENHV_GetChName(handle, slot, 1, &tempChan, &name_char) != CAENHV_OK)
-        throw std::runtime_error("CAENHV_GetChName failed: " + std::string(CAENHV_GetError(handle)));
-
+    if (CAENHV_GetChName(handle, slot, 1, &tempChan, &name_char) != CAENHV_OK) {
+        strncpy(name_char, "UNKNOWN", sizeof(MAX_CH_NAME));
+        //throw std::runtime_error("CAENHV_GetChName failed: " + std::string(CAENHV_GetError(handle)));
+    }
     return std::string(name_char);
 }
 

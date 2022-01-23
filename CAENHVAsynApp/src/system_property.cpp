@@ -78,11 +78,14 @@ std::string ISystemPropertyString::getVal() const
         return "";
 
     char temp[4096];
+    temp[0] = '\0';
 
     CAENHVRESULT r = CAENHV_GetSysProp(handle, prop.c_str(), temp);
 
-    if ( r != CAENHV_OK && r != CAENHV_GETPROPNOTIMPL && r != CAENHV_NOTGETPROP )
+    if ( r != CAENHV_OK && r != CAENHV_GETPROPNOTIMPL && r != CAENHV_NOTGETPROP && r != -1) {
+        //std::cerr << "CAENHV_GetSysProp returned " << r << " for \"" << prop.c_str() << "\"" << std::endl;
         throw std::runtime_error("CAENHV_GetSysProp failed: " + std::string(CAENHV_GetError(handle)));
+    }
 
     return temp;
 }
@@ -121,7 +124,7 @@ float ISystemPropertyFloat::getVal() const
     if (mode == SYSPROP_MODE_WRONLY)
         return 0.0;
 
-    float temp;
+    float temp(0.0);
 
     CAENHVRESULT r = CAENHV_GetSysProp(handle, prop.c_str(), &temp);
 
@@ -155,12 +158,14 @@ int32_t ISystemPropertyIntegerTemplate<T>::getVal() const
     if (mode == SYSPROP_MODE_WRONLY)
         return 0;
 
-    T temp;
+    T temp(0);
 
     CAENHVRESULT r = CAENHV_GetSysProp(handle, prop.c_str(), &temp);
 
-    if ( r != CAENHV_OK && r != CAENHV_GETPROPNOTIMPL && r != CAENHV_NOTGETPROP )
+    if ( r != CAENHV_OK && r != CAENHV_GETPROPNOTIMPL && r != CAENHV_NOTGETPROP && r != -1) {
+        //std::cerr << "CAENHV_GetSysProp returned " << r << " for \"" << prop.c_str() << "\"" << std::endl;
         throw std::runtime_error("CAENHV_GetSysProp failed: " + std::string(CAENHV_GetError(handle)));
+    }
 
     return static_cast<int32_t>(temp);
 }
