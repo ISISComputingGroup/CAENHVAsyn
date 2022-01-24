@@ -329,6 +329,27 @@ void CAENHVAsyn::createParamString(T p, std::map<int, T>& list)
     }
 }
 
+void CAENHVAsyn::crateKeepAliveC(void* arg)
+{
+    CAENHVAsyn* caen = (CAENHVAsyn*)arg;
+    caen->crateKeepAlive();
+}
+
+// the SYx527 crates have a 30 second timeout. As per CAEN manual suggestion we implement a 15 second poll
+// For an IOC connected to one or two crates you may not see a problem. If the IOC connects to a large
+// number of crates then the connection to the first crate may timeout while details are still being read
+// from later crates as part of the ioc startup 
+void CAENHVAsyn::crateKeepAlive()
+{
+    while(true) {
+        epicsThreadSleep(15.0);
+        lock();
+        crate->keepAlive();
+        unlock();
+    }
+}
+
+
 CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password)
 :
     asynPortDriver(
@@ -473,6 +494,8 @@ CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::s
                 createParamInteger<ChannelParameterBinary>(*paramIt, channelParameterBinaryList);
         }
     }
+    epicsThreadCreate("CrateKeepAlive", epicsThreadPriorityMedium, epicsThreadGetStackSize(epicsThreadStackMedium), crateKeepAliveC, this);
+
 }
 
 ////////////////////////////////////////////

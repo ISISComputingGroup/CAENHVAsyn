@@ -73,6 +73,7 @@ public:
     std::vector<SystemPropertyString>  getSystemPropertyStrings()  { return systemPropertyStrings;  };
 
     std::vector<Board> getBoards() { return boards; };
+    void keepAlive();
 
 private:
 

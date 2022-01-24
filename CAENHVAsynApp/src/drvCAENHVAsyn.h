@@ -144,6 +144,9 @@ class CAENHVAsyn : public asynPortDriver
         // Whether to only read from the device
         static bool readOnly;
 
+        static void crateKeepAliveC(void* arg);
+        void crateKeepAlive();
+        
     private:
 
 

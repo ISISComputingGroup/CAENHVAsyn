@@ -18,7 +18,6 @@
  * contained in the LICENSE.txt file.
  * ----------------------------------------------------------------------------
 **/
-
 #include "crate.h"
 
 void ICrate::GetPropList()
@@ -150,6 +149,13 @@ void ICrate::GetCrateMap()
     free(FmwRelMinList);
     free(FmwRelMaxList);
     #endif
+}
+
+// called by driver to read something from the crate to keep the connection alive 
+void ICrate::keepAlive()
+{
+    char swRelease[256];
+    CAENHV_GetSysProp(handle, "SwRelease", swRelease);
 }
 
 ICrate::ICrate(int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password, const bool readOnly)
