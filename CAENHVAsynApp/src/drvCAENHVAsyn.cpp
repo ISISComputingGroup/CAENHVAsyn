@@ -66,6 +66,7 @@ void CAENHVAsyn::createParamFloat(T p, std::map<int, T>& list)
         {
             dbParamsLocal << ",SCAN=1 second";
             dbParamsLocal << ",R=" << recordName << ":Rd";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/ai.template", dbParamsLocal.str().c_str());
         }
 
@@ -74,6 +75,7 @@ void CAENHVAsyn::createParamFloat(T p, std::map<int, T>& list)
             dbParamsLocal << ",DRVL=" << min;
             dbParamsLocal << ",DRVH=" << max;
             dbParamsLocal << ",R="    << recordName << ":St";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/ao.template", dbParamsLocal.str().c_str());
         }
 
@@ -113,6 +115,7 @@ void CAENHVAsyn::createParamFloat(SystemPropertyFloat p, std::map<int, SystemPro
         {
             dbParamsLocal << ",SCAN=1 second";
             dbParamsLocal << ",R=" << recordName << ":Rd";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/ai.template", dbParamsLocal.str().c_str());
         }
 
@@ -121,6 +124,7 @@ void CAENHVAsyn::createParamFloat(SystemPropertyFloat p, std::map<int, SystemPro
             dbParamsLocal << ",DRVL=";
             dbParamsLocal << ",DRVH=";
             dbParamsLocal << ",R="    << recordName << ":St";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/ao.template", dbParamsLocal.str().c_str());                                                               
         }
 
@@ -160,12 +164,14 @@ void CAENHVAsyn::createParamBinary(T p, std::map<int, T>& list)
         {
             dbParamsLocal << ",SCAN=1 second";
             dbParamsLocal << ",R=" << recordName << ":Rd";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/bi.template", dbParamsLocal.str().c_str());
         }
 
         if ( (!mode.compare("RW")) || (!mode.compare("WO")) )
         {
             dbParamsLocal << ",R="    << recordName << ":St";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/bo.template", dbParamsLocal.str().c_str());
         }
     }
@@ -215,6 +221,7 @@ void CAENHVAsyn::createParamMBinary(T p, std::map<int, T>& list, const statusRec
                     break; // MBBIs can only hold 16 values
                 }
             }
+            dbParamsLocalMbbi << macros_;
             dbLoadRecords("db/mbbi.template", dbParamsLocalMbbi.str().c_str());
 
             // Use the first (rather than zeroth) element in the map as the first is just for the null case in the mbbi 
@@ -227,6 +234,7 @@ void CAENHVAsyn::createParamMBinary(T p, std::map<int, T>& list, const statusRec
                 dbParamsLocal2 << ",MASK=" << it->first;
                 dbParamsLocal2 << ",DESC=" << it->second.at(1);
                 dbParamsLocal2 << ",R="    << recordName << it->second.at(0) << ":Rd";
+                dbParamsLocal2 << macros_;
                 dbLoadRecords("db/bi.template", dbParamsLocal2.str().c_str());
             }
         }
@@ -243,6 +251,7 @@ void CAENHVAsyn::createParamMBinary(T p, std::map<int, T>& list, const statusRec
                 dbParamsLocal2 << ",MASK=" << it->first;
                 dbParamsLocal2 << ",DESC=" << it->second.at(1);
                 dbParamsLocal2 << ",R="    << recordName << it->second.at(0) << ":Rd";
+                dbParamsLocal2 << macros_;
                 dbLoadRecords("db/bo.template", dbParamsLocal2.str().c_str());
             }
         }
@@ -278,12 +287,14 @@ void CAENHVAsyn::createParamInteger(T p, std::map<int, T>& list)
         {
             dbParamsLocal << ",R=" << recordName << ":Rd";
             dbParamsLocal << ",SCAN=1 second";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/longin.template", dbParamsLocal.str().c_str());
         }
 
         if ( (!mode.compare("RW")) || (!mode.compare("WO")) )
         {
             dbParamsLocal << ",R=" << recordName << ":St";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/longout.template", dbParamsLocal.str().c_str());
         }
     }
@@ -318,12 +329,14 @@ void CAENHVAsyn::createParamString(T p, std::map<int, T>& list)
         {
             dbParamsLocal << ",R=" << recordName << ":Rd";
             dbParamsLocal << ",SCAN=1 second";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/stringin.template", dbParamsLocal.str().c_str());
         }
 
         if ( (!mode.compare("RW")) || (!mode.compare("WO")) )
         {
             dbParamsLocal << ",R=" << recordName << ":St";
+            dbParamsLocal << macros_;
             dbLoadRecords("db/stringout.template", dbParamsLocal.str().c_str());
         }
     }
@@ -350,7 +363,8 @@ void CAENHVAsyn::crateKeepAlive()
 }
 
 
-CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password)
+CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::string& ipAddr,
+          const std::string& userName, const std::string& password, const std::string& macros)
 :
     asynPortDriver(
         portName.c_str(),
@@ -381,6 +395,10 @@ CAENHVAsyn::CAENHVAsyn(const std::string& portName, int systemType, const std::s
         unsigned char buf[sizeof(struct in6_addr)];
         if (!inet_pton(AF_INET, ipAddr.c_str(), buf))
             throw std::runtime_error("Invalid IP address");
+    }
+    
+    if (!macros.empty()) {
+        macros_ = std::string(",") + macros;
     }
 
     // Only SYx527 are supported at the
@@ -1106,10 +1124,9 @@ asynStatus CAENHVAsyn::writeOctet(asynUser *pasynUser, const char *value, size_t
 ////////////////////////////////////
 
 // + CAENHVAsynConfig //
-extern "C" int CAENHVAsynConfig(const char* portName, int systemType, char* ipAddr, const char* userName, const char* password)
+extern "C" int CAENHVAsynConfig(const char* portName, int systemType, char* ipAddr, const char* userName, const char* password, const char* macros)
 {
-    new CAENHVAsyn(portName, systemType, ipAddr, userName, password);
-
+    new CAENHVAsyn(portName, systemType, ipAddr, userName, password, (macros != NULL ? macros : ""));
     return asynSuccess;
 }
 
@@ -1118,6 +1135,7 @@ static const iocshArg confArg1 = { "systemType", iocshArgInt    };
 static const iocshArg confArg2 = { "ipAddr",     iocshArgString };
 static const iocshArg confArg3 = { "userName",   iocshArgString };
 static const iocshArg confArg4 = { "password",   iocshArgString };
+static const iocshArg confArg5 = { "macros",   iocshArgString };
 
 static const iocshArg * const confArgs[] =
 {
@@ -1125,14 +1143,15 @@ static const iocshArg * const confArgs[] =
     &confArg1,
     &confArg2,
     &confArg3,
-    &confArg4
+    &confArg4,
+    &confArg5
 };
 
-static const iocshFuncDef configFuncDef = {"CAENHVAsynConfig", 5, confArgs};
+static const iocshFuncDef configFuncDef = {"CAENHVAsynConfig", 6, confArgs};
 
 static void configCallFunc(const iocshArgBuf *args)
 {
-    CAENHVAsynConfig(args[0].sval, args[1].ival, args[2].sval, args[3].sval, args[4].sval);
+    CAENHVAsynConfig(args[0].sval, args[1].ival, args[2].sval, args[3].sval, args[4].sval, args[5].sval);
 }
 // - CAENHVAsynConfig //
 

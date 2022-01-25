@@ -125,7 +125,7 @@ statusRecordMap_t recordFieldBdParamBdStatus =
 class CAENHVAsyn : public asynPortDriver
 {
     public:
-        CAENHVAsyn(const std::string& portName, int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password);
+        CAENHVAsyn(const std::string& portName, int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password, const std::string& macros);
 
         // Methods that we override from asynPortDriver
         virtual asynStatus readFloat64        (asynUser *pasynUser, epicsFloat64 *value);
@@ -165,6 +165,7 @@ class CAENHVAsyn : public asynPortDriver
         const std::string driverName_;
         std::string portName_;
         std::string iocName_;
+        std::string macros_;
 
         // Crate object
         Crate crate;
