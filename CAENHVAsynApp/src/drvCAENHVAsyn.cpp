@@ -564,6 +564,7 @@ asynStatus CAENHVAsyn::readInt32(asynUser *pasynUser, epicsInt32 *value)
         asynPrint(pasynUser, ASYN_TRACE_ERROR, \
                     "Driver '%s', Port '%s', Method '%s', Function number '%d', parameter '%s' : exception caught '%s'\n", \
                     this->driverName_.c_str(), this->portName_.c_str(), method.c_str(), function, name, e.what());
+        crate->reconnect();
     }
 
     // If the function was not found, fall back to the base method
@@ -698,6 +699,7 @@ asynStatus CAENHVAsyn::readFloat64(asynUser *pasynUser, epicsFloat64 *value)
         asynPrint(pasynUser, ASYN_TRACE_ERROR, \
                     "Driver '%s', Port '%s', Method '%s', Function number '%d', parameter '%s' : exception caught '%s'\n", \
                     this->driverName_.c_str(), this->portName_.c_str(), method.c_str(), function, name, e.what());
+        crate->reconnect();
     }
 
     // If the function was not found, fall back to the base method

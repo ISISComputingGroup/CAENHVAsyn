@@ -19,6 +19,7 @@
  * ----------------------------------------------------------------------------
 **/
 #include "crate.h"
+#include <epicsThread.h>
 
 void ICrate::GetPropList()
 {
@@ -155,15 +156,24 @@ void ICrate::GetCrateMap()
 void ICrate::keepAlive()
 {
     char swRelease[256];
-    CAENHV_GetSysProp(handle, "SwRelease", swRelease);
+    if (connected)
+    {
+        CAENHV_GetSysProp(handle, "SwRelease", swRelease);
+    }
 }
 
 ICrate::ICrate(int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password, const bool readOnly)
 :
   handle(-1),
-  readOnly(readOnly)
+  readOnly(readOnly),
+  connected(false),
+  systemType(systemType),
+  ipAddr(ipAddr),
+  userName(userName),
+  password(password)
 {
     handle = InitSystem(systemType, ipAddr, userName, password);
+    connected = true;
     GetPropList();
     GetCrateMap();
 }
@@ -177,11 +187,29 @@ ICrate::~ICrate()
 {
 }
 
+void ICrate::reconnect()
+{
+    if (connected)
+    {
+        connected = false;
+        DeinitSystem();
+    }
+    epicsThreadSleep(1.0);
+    try {
+        handle = InitSystem(systemType, ipAddr, userName, password);
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << "Reconnect failed: " << e.what() << std::endl;
+    }
+    
+}
+    
+
 int ICrate::InitSystem(int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password) const
 {
     int h;
     std::string functionName("initSystem");
-
+    
     CAENHVRESULT r = CAENHV_InitSystem( static_cast<CAENHV_SYSTEM_TYPE_t>(systemType),
                                         LINKTYPE_TCPIP,
                                         const_cast<void*>( static_cast<const void*>( ipAddr.c_str() ) ),
@@ -198,6 +226,15 @@ int ICrate::InitSystem(int systemType, const std::string& ipAddr, const std::str
         throw std::runtime_error(retMessage.str().c_str());
 
     return h;
+}
+
+void ICrate::DeinitSystem()
+{
+    CAENHVRESULT r = CAENHV_DeinitSystem(handle);
+    if( r != CAENHV_OK ) {
+        std::cerr << "Error " << r << " from CAENHV_DenitSystem" << std::endl;
+    }
+    handle = -1;
 }
 
 

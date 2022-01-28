@@ -55,11 +55,11 @@ typedef std::shared_ptr<IBoard> Board;
 class IBoard
 {
 public:
-    IBoard(int h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly);
+    IBoard(int& h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly);
     ~IBoard();
 
     // Factory method
-    static Board create(int h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly);
+    static Board create(int& h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly);
 
     void printInfo(std::ostream& stream) const;
     void printBoardInfo(std::ostream& stream) const;
@@ -77,7 +77,7 @@ private:
     void GetBoardParams();
     void GetBoardChannels();
 
-    int                         handle;
+    int&                        handle;
     std::size_t                 slot;
     std::string                 model;
     std::string                 description;

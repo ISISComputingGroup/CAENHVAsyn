@@ -21,7 +21,7 @@
 
 #include "board.h"
 
-IBoard::IBoard(int h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly)
+IBoard::IBoard(int& h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly)
 :
     handle(h),
     slot(s),
@@ -40,7 +40,7 @@ IBoard::~IBoard()
 {
 }
 
-Board IBoard::create(int h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly)
+Board IBoard::create(int& h, std::size_t s, std::string m, std::string d, std::size_t n, std::string sn, std::string fw, bool readOnly)
 {
     return std::make_shared<IBoard>(h, s, m, d, n, sn, fw, readOnly);
 }

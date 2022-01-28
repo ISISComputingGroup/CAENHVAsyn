@@ -21,7 +21,7 @@
 
 #include "system_property.h"
 
-SystemPropertyBase::SystemPropertyBase(int h, const std::string&  p, uint32_t m)
+SystemPropertyBase::SystemPropertyBase(int& h, const std::string&  p, uint32_t m)
 :
     handle(h),
     prop(p),
@@ -60,12 +60,12 @@ void SystemPropertyBase::printInfo(std::ostream& stream) const
 }
 
 // String class
-SystemPropertyString ISystemPropertyString::create(int h, const std::string&  p, uint32_t m)
+SystemPropertyString ISystemPropertyString::create(int& h, const std::string&  p, uint32_t m)
 {
     return std::make_shared<ISystemPropertyString>(h, p, m);
 }
 
-ISystemPropertyString::ISystemPropertyString(int h, const std::string&  p, uint32_t m)
+ISystemPropertyString::ISystemPropertyString(int& h, const std::string&  p, uint32_t m)
 :
     SystemPropertyBase(h,p,m)
 {
@@ -108,12 +108,12 @@ void ISystemPropertyString::setVal(const std::string& v) const
 }
 
 // Float class
-SystemPropertyFloat ISystemPropertyFloat::create(int h, const std::string&  p, uint32_t m)
+SystemPropertyFloat ISystemPropertyFloat::create(int& h, const std::string&  p, uint32_t m)
 {
     return std::make_shared<ISystemPropertyFloat>(h, p, m);
 }
 
-ISystemPropertyFloat::ISystemPropertyFloat(int h, const std::string&  p, uint32_t m)
+ISystemPropertyFloat::ISystemPropertyFloat(int& h, const std::string&  p, uint32_t m)
 :
     SystemPropertyBase(h,p,m)
 {
@@ -147,7 +147,7 @@ void ISystemPropertyFloat::setVal(float v) const
 
 // Integer class template
 template<typename T>
-std::shared_ptr< ISystemPropertyIntegerTemplate<T> > ISystemPropertyIntegerTemplate<T>::create(int h, const std::string&  p, uint32_t m)
+std::shared_ptr< ISystemPropertyIntegerTemplate<T> > ISystemPropertyIntegerTemplate<T>::create(int& h, const std::string&  p, uint32_t m)
 {
     return std::make_shared<ISystemPropertyIntegerTemplate>(h, p, m);
 }

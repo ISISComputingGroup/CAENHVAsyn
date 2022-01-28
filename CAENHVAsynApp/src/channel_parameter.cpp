@@ -23,7 +23,7 @@
 
 // Base class for all parameter types
 template<typename T>
-ChannelParameterBase<T>::ChannelParameterBase(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterBase<T>::ChannelParameterBase(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 :
     handle(h),
     slot(s),
@@ -110,12 +110,12 @@ void ChannelParameterBase<T>::printInfo(std::ostream& stream) const
 }
 
 // Class for Numeric parameters
-ChannelParameterNumeric IChannelParameterNumeric::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterNumeric IChannelParameterNumeric::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelParameterNumeric>(h, s, c, p, m);
 }
 
-IChannelParameterNumeric::IChannelParameterNumeric(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelParameterNumeric::IChannelParameterNumeric(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 :
     ChannelParameterBase<float>(h, s, c, p, m)
 {
@@ -158,12 +158,12 @@ void IChannelParameterNumeric::printInfo(std::ostream& stream) const
 }
 
 // Class for OnOff parameters
-ChannelParameterOnOff IChannelParameterOnOff::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterOnOff IChannelParameterOnOff::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelParameterOnOff>(h, s, c, p, m);
 }
 
-IChannelParameterOnOff::IChannelParameterOnOff(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelParameterOnOff::IChannelParameterOnOff(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 :
     ChannelParameterBase<uint32_t>(h, s, c, p, m)
 {
@@ -195,13 +195,13 @@ void IChannelParameterOnOff::printInfo(std::ostream& stream) const
 }
 
 // Class for ChStatus parameters
-IChannelParameterChStatus::IChannelParameterChStatus(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelParameterChStatus::IChannelParameterChStatus(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 :
     ChannelParameterBase<uint32_t>(h, s, c, p, m)
 {
 }
 
-ChannelParameterChStatus IChannelParameterChStatus::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterChStatus IChannelParameterChStatus::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelParameterChStatus>(h, s, c, p, m);
 }
@@ -218,13 +218,13 @@ void IChannelParameterChStatus::printInfo(std::ostream& stream) const
 }
 
 // Class for Binary parameters
-IChannelParameterBinary::IChannelParameterBinary(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelParameterBinary::IChannelParameterBinary(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 :
     ChannelParameterBase<int32_t>(h, s, c, p, m)
 {
 }
 
-ChannelParameterBinary IChannelParameterBinary::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterBinary IChannelParameterBinary::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelParameterBinary>(h, s, c, p, m);
 }
@@ -241,25 +241,25 @@ void IChannelParameterBinary::printInfo(std::ostream& stream) const
 }
 
 // Class for String parameters
-IChannelParameterString::IChannelParameterString(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelParameterString::IChannelParameterString(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
     :
     ChannelParameterBase<std::string>(h, s, c, p, m)
 {
 }
 
-ChannelParameterString IChannelParameterString::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelParameterString IChannelParameterString::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelParameterString>(h, s, c, p, m);
 }
 
 // Class for Channel Name
-IChannelName::IChannelName(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+IChannelName::IChannelName(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
     :
     IChannelParameterString(h, s, c, p, m)
 {
 }
 
-ChannelName IChannelName::create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
+ChannelName IChannelName::create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IChannelName>(h, s, c, p, m);
 }

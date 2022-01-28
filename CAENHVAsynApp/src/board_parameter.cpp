@@ -23,7 +23,7 @@
 
 // Base class for all parameter types
 template<typename T>
-BoardParameterBase<T>::BoardParameterBase(int h, std::size_t s, const std::string&  p, uint32_t m)
+BoardParameterBase<T>::BoardParameterBase(int& h, std::size_t s, const std::string&  p, uint32_t m)
 :
     handle(h),
     slot(s),
@@ -105,12 +105,12 @@ void BoardParameterBase<T>::printInfo(std::ostream& stream) const
 }
 
 // Class for Numeric parameters
-BoardParameterNumeric IBoardParameterNumeric::create(int h, std::size_t s, const std::string&  p, uint32_t m)
+BoardParameterNumeric IBoardParameterNumeric::create(int& h, std::size_t s, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IBoardParameterNumeric>(h, s, p, m);
 }
 
-IBoardParameterNumeric::IBoardParameterNumeric(int h, std::size_t s, const std::string&  p, uint32_t m)
+IBoardParameterNumeric::IBoardParameterNumeric(int& h, std::size_t s, const std::string&  p, uint32_t m)
 :
     BoardParameterBase<float>(h, s, p, m)
 {
@@ -151,12 +151,12 @@ void IBoardParameterNumeric::printInfo(std::ostream& stream) const
 }
 
 // Class for OnOff parameters
-BoardParameterOnOff IBoardParameterOnOff::create(int h, std::size_t s, const std::string&  p, uint32_t m)
+BoardParameterOnOff IBoardParameterOnOff::create(int& h, std::size_t s, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IBoardParameterOnOff>(h, s, p, m);
 }
 
-IBoardParameterOnOff::IBoardParameterOnOff(int h, std::size_t s, const std::string&  p, uint32_t m)
+IBoardParameterOnOff::IBoardParameterOnOff(int& h, std::size_t s, const std::string&  p, uint32_t m)
 :
     BoardParameterBase<uint32_t>(h, s, p, m)
 {
@@ -185,51 +185,51 @@ void IBoardParameterOnOff::printInfo(std::ostream& stream) const
 }
 
 // Class for ChStatus parameters
-IBoardParameterChStatus::IBoardParameterChStatus(int h, std::size_t s, const std::string&  p, uint32_t m)
+IBoardParameterChStatus::IBoardParameterChStatus(int& h, std::size_t s, const std::string&  p, uint32_t m)
 :
     BoardParameterBase<uint32_t>(h, s, p, m)
 {
 }
 
-BoardParameterChStatus IBoardParameterChStatus::create(int h, std::size_t s, const std::string&  p, uint32_t m)
+BoardParameterChStatus IBoardParameterChStatus::create(int& h, std::size_t s, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IBoardParameterChStatus>(h, s, p, m);
 }
 
 // Class for BdStatus parameters
-IBoardParameterBdStatus::IBoardParameterBdStatus(int h, std::size_t s, const std::string&  p, uint32_t m)
+IBoardParameterBdStatus::IBoardParameterBdStatus(int& h, std::size_t s, const std::string&  p, uint32_t m)
 :
     BoardParameterBase<uint32_t>(h, s, p, m)
 {
 }
 
-BoardParameterBdStatus IBoardParameterBdStatus::create(int h, std::size_t s, const std::string&  p, uint32_t m)
+BoardParameterBdStatus IBoardParameterBdStatus::create(int& h, std::size_t s, const std::string&  p, uint32_t m)
 {
     return std::make_shared<IBoardParameterBdStatus>(h, s, p, m);
 }
 
 // Class for String parameters that have a read only value
-IBoardParameterReadOnlyString::IBoardParameterReadOnlyString(int h, std::size_t s, const std::string&  p, std::string val)
+IBoardParameterReadOnlyString::IBoardParameterReadOnlyString(int& h, std::size_t s, const std::string&  p, std::string val)
 :
     BoardParameterBase<std::string>(h, s, p, PARAM_MODE_RDONLY)
 {
     this->val = val;
 }
 
-BoardParameterReadOnlyString IBoardParameterReadOnlyString::create(int h, std::size_t s, const std::string&  p, std::string val)
+BoardParameterReadOnlyString IBoardParameterReadOnlyString::create(int& h, std::size_t s, const std::string&  p, std::string val)
 {
     return std::make_shared<IBoardParameterReadOnlyString>(h, s, p, val);
 }
 
 // Class for String parameters that have a read only value
-IBoardParameterReadOnlySizeT::IBoardParameterReadOnlySizeT(int h, std::size_t s, const std::string&  p, std::size_t val)
+IBoardParameterReadOnlySizeT::IBoardParameterReadOnlySizeT(int& h, std::size_t s, const std::string&  p, std::size_t val)
 :
     BoardParameterBase<std::size_t>(h, s, p, PARAM_MODE_RDONLY)
 {
     this->val = val;
 }
 
-BoardParameterReadOnlySizeT IBoardParameterReadOnlySizeT::create(int h, std::size_t s, const std::string&  p, std::size_t val)
+BoardParameterReadOnlySizeT IBoardParameterReadOnlySizeT::create(int& h, std::size_t s, const std::string&  p, std::size_t val)
 {
     return std::make_shared<IBoardParameterReadOnlySizeT>(h, s, p, val);
 }

@@ -67,7 +67,7 @@ template<typename T>
 class ChannelParameterBase
 {
 public:
-    ChannelParameterBase(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    ChannelParameterBase(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     virtual ~ChannelParameterBase() {};
 
     std::string getMode()            { return modeStr;    };
@@ -81,7 +81,7 @@ public:
     virtual void setVal(T value) const;
 
 protected:
-    int         handle;
+    int&        handle;
     std::size_t slot;
     std::size_t channel;
     std::string param;
@@ -97,11 +97,11 @@ protected:
 class IChannelParameterNumeric : public ChannelParameterBase<float>
 {
 public:
-    IChannelParameterNumeric(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelParameterNumeric(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelParameterNumeric() {};
 
     // Factory method
-    static ChannelParameterNumeric create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelParameterNumeric create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 
     float       getMinVal() const { return minVal; };
     float       getMaxVal() const { return maxVal; };
@@ -119,11 +119,11 @@ private:
 class IChannelParameterOnOff : public ChannelParameterBase<uint32_t>
 {
 public:
-    IChannelParameterOnOff(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelParameterOnOff(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelParameterOnOff() {};
 
     // Factory method
-    static ChannelParameterOnOff create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelParameterOnOff create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 
     std::string getOnState()  const { return onState;  };
     std::string getOffState() const { return offState; };
@@ -139,11 +139,11 @@ private:
 class IChannelParameterChStatus : public ChannelParameterBase<uint32_t>
 {
 public:
-    IChannelParameterChStatus(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelParameterChStatus(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelParameterChStatus() {};
 
     // Factory method
-    static ChannelParameterChStatus create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelParameterChStatus create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 
     virtual void printInfo(std::ostream& stream) const;
 };
@@ -152,11 +152,11 @@ public:
 class IChannelParameterBinary : public ChannelParameterBase<int32_t>
 {
 public:
-    IChannelParameterBinary(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelParameterBinary(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelParameterBinary() {};
 
     // Factory method
-    static ChannelParameterBinary create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelParameterBinary create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 
     virtual void printInfo(std::ostream& stream) const;
 };
@@ -165,22 +165,22 @@ public:
 class IChannelParameterString : public ChannelParameterBase<std::string>
 {
 public:
-    IChannelParameterString(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelParameterString(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelParameterString() {};
 
     // Factory method
-    static ChannelParameterString create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelParameterString create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 };
 
 // Class for Channel name (not really a parameter as CAEN defines it)
 class IChannelName : public IChannelParameterString
 {
 public:
-    IChannelName(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    IChannelName(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
     ~IChannelName() {};
 
     // Factory method
-    static ChannelName create(int h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
+    static ChannelName create(int& h, std::size_t s, std::size_t c, const std::string&  p, uint32_t m);
 
     virtual std::string    getVal()        const;
     virtual void setVal(std::string value) const;

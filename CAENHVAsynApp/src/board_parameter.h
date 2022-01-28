@@ -70,7 +70,7 @@ template<typename T>
 class BoardParameterBase
 {
 public:
-    BoardParameterBase(int h, std::size_t s, const std::string&  p, uint32_t m);
+    BoardParameterBase(int& h, std::size_t s, const std::string&  p, uint32_t m);
     virtual ~BoardParameterBase() {};
 
     std::string getMode()            { return modeStr;         };
@@ -84,7 +84,7 @@ public:
     virtual void setVal(T value) const;
 
 protected:
-    int         handle;
+    int&        handle;
     std::size_t slot;
     std::string param;
     uint32_t    mode;
@@ -98,11 +98,11 @@ protected:
 class IBoardParameterNumeric : public BoardParameterBase<float>
 {
 public:
-    IBoardParameterNumeric(int h, std::size_t s, const std::string&  p, uint32_t m);
+    IBoardParameterNumeric(int& h, std::size_t s, const std::string&  p, uint32_t m);
     ~IBoardParameterNumeric() {};
 
     // Factory method
-    static BoardParameterNumeric create(int h, std::size_t s, const std::string&  p, uint32_t m);
+    static BoardParameterNumeric create(int& h, std::size_t s, const std::string&  p, uint32_t m);
 
     float       getMinVal() const { return minVal; };
     float       getMaxVal() const { return maxVal; };
@@ -120,11 +120,11 @@ private:
 class  IBoardParameterOnOff : public BoardParameterBase<uint32_t>
 {
 public:
-    IBoardParameterOnOff(int h, std::size_t s, const std::string&  p, uint32_t m);
+    IBoardParameterOnOff(int& h, std::size_t s, const std::string&  p, uint32_t m);
     ~IBoardParameterOnOff() {};
 
     // Factory method
-    static BoardParameterOnOff create(int h, std::size_t s, const std::string&  p, uint32_t m);
+    static BoardParameterOnOff create(int& h, std::size_t s, const std::string&  p, uint32_t m);
 
     const std::string& getOnState()  const { return onState;  };
     const std::string& getOffState() const { return offState; };
@@ -140,33 +140,33 @@ private:
 class IBoardParameterChStatus : public BoardParameterBase<uint32_t>
 {
 public:
-    IBoardParameterChStatus(int h, std::size_t s, const std::string&  p, uint32_t m);
+    IBoardParameterChStatus(int& h, std::size_t s, const std::string&  p, uint32_t m);
     virtual ~IBoardParameterChStatus() {};
 
     // Factory method
-    static BoardParameterChStatus create(int h, std::size_t s, const std::string&  p, uint32_t m);
+    static BoardParameterChStatus create(int& h, std::size_t s, const std::string&  p, uint32_t m);
 };
 
 // Class for BdStatus parameters
 class IBoardParameterBdStatus : public BoardParameterBase<uint32_t>
 {
 public:
-    IBoardParameterBdStatus(int h, std::size_t s, const std::string&  p, uint32_t m);
+    IBoardParameterBdStatus(int& h, std::size_t s, const std::string&  p, uint32_t m);
     virtual ~IBoardParameterBdStatus() {};
 
     // Factory method
-    static BoardParameterBdStatus create(int h, std::size_t s, const std::string&  p, uint32_t m);
+    static BoardParameterBdStatus create(int& h, std::size_t s, const std::string&  p, uint32_t m);
 };
 
 // Class for String parameters
 class IBoardParameterReadOnlyString: public BoardParameterBase<std::string>
 {
 public:
-    IBoardParameterReadOnlyString(int h, std::size_t s, const std::string&  p, std::string val);
+    IBoardParameterReadOnlyString(int& h, std::size_t s, const std::string&  p, std::string val);
     virtual ~IBoardParameterReadOnlyString() {};
 
     // Factory method
-    static BoardParameterReadOnlyString create(int h, std::size_t s, const std::string&  p, std::string val);
+    static BoardParameterReadOnlyString create(int& h, std::size_t s, const std::string&  p, std::string val);
 
     std::string getVal() const { return val; };
 
@@ -178,11 +178,11 @@ private:
 class IBoardParameterReadOnlySizeT: public BoardParameterBase<std::size_t>
 {
 public:
-    IBoardParameterReadOnlySizeT(int h, std::size_t s, const std::string&  p, std::size_t val);
+    IBoardParameterReadOnlySizeT(int& h, std::size_t s, const std::string&  p, std::size_t val);
     virtual ~IBoardParameterReadOnlySizeT() {};
 
     // Factory method
-    static BoardParameterReadOnlySizeT create(int h, std::size_t s, const std::string&  p, std::size_t val);
+    static BoardParameterReadOnlySizeT create(int& h, std::size_t s, const std::string&  p, std::size_t val);
 
     std::size_t getVal() const { return val; };
 

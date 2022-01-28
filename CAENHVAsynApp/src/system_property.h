@@ -57,7 +57,7 @@ typedef std::shared_ptr< ISystemPropertyString  > SystemPropertyString;
 class SystemPropertyBase
 {
 public:
-    SystemPropertyBase(int h, const std::string&  p, uint32_t m);
+    SystemPropertyBase(int& h, const std::string&  p, uint32_t m);
     virtual ~SystemPropertyBase() {};
 
     std::string getMode()            { return modeStr;    };
@@ -68,7 +68,7 @@ public:
     void printInfo(std::ostream& stream) const;
 
 protected:
-    int         handle;
+    int&        handle;
     std::string prop;
     uint32_t    mode;
     std::string modeStr;
@@ -80,11 +80,11 @@ protected:
 class ISystemPropertyString : public SystemPropertyBase
 {
 public:
-    ISystemPropertyString(int h, const std::string&  p, uint32_t m);
+    ISystemPropertyString(int& h, const std::string&  p, uint32_t m);
     ~ISystemPropertyString() {};
 
     // Factory method
-    static SystemPropertyString create(int h, const std::string&  p, uint32_t m);
+    static SystemPropertyString create(int& h, const std::string&  p, uint32_t m);
 
     std::string getVal()                     const;
     void        setVal(const std::string& v) const;
@@ -93,11 +93,11 @@ public:
 class ISystemPropertyFloat : public SystemPropertyBase
 {
 public:
-    ISystemPropertyFloat(int h, const std::string&  p, uint32_t m);
+    ISystemPropertyFloat(int& h, const std::string&  p, uint32_t m);
     ~ISystemPropertyFloat() {};
 
     // Factory method
-    static SystemPropertyFloat create(int h, const std::string&  p, uint32_t m);
+    static SystemPropertyFloat create(int& h, const std::string&  p, uint32_t m);
 
     float getVal()        const;
     void  setVal(float v) const;
@@ -107,7 +107,7 @@ public:
 class ISystemPropertyInteger : public SystemPropertyBase
 {
 public:
-    ISystemPropertyInteger(int h, const std::string&  p, uint32_t m)  : SystemPropertyBase(h,p,m) {};
+    ISystemPropertyInteger(int& h, const std::string&  p, uint32_t m)  : SystemPropertyBase(h,p,m) {};
     virtual ~ISystemPropertyInteger() {};
 
     virtual int32_t getVal()              const = 0;
@@ -119,11 +119,11 @@ template<typename T>
 class ISystemPropertyIntegerTemplate : public ISystemPropertyInteger
 {
 public:
-    ISystemPropertyIntegerTemplate(int h, const std::string&  p, uint32_t m) : ISystemPropertyInteger(h,p,m) {};
+    ISystemPropertyIntegerTemplate(int& h, const std::string&  p, uint32_t m) : ISystemPropertyInteger(h,p,m) {};
     virtual ~ISystemPropertyIntegerTemplate() {};
 
     // Factory method
-    static std::shared_ptr< ISystemPropertyIntegerTemplate > create(int h, const std::string&  p, uint32_t m);
+    static std::shared_ptr< ISystemPropertyIntegerTemplate > create(int& h, const std::string&  p, uint32_t m);
 
     virtual int32_t getVal()              const;
     virtual void    setVal(int32_t value) const;

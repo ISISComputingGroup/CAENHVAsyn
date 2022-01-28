@@ -21,7 +21,7 @@
 
 #include "channel.h"
 
-IChannel::IChannel(int h, std::size_t s, std::size_t c, bool readOnly)
+IChannel::IChannel(int& h, std::size_t s, std::size_t c, bool readOnly)
 :
     handle(h),
     slot(s),
@@ -31,7 +31,7 @@ IChannel::IChannel(int h, std::size_t s, std::size_t c, bool readOnly)
     GetChannelParams();
 }
 
-Channel IChannel::create(int h, std::size_t s, std::size_t c, bool readOnly)
+Channel IChannel::create(int& h, std::size_t s, std::size_t c, bool readOnly)
 {
     return std::make_shared<IChannel>(h, s, c, readOnly);
 }

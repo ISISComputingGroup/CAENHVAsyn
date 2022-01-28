@@ -74,10 +74,12 @@ public:
 
     std::vector<Board> getBoards() { return boards; };
     void keepAlive();
+    void reconnect();
 
 private:
 
     int  InitSystem(int systemType, const std::string& ipAddr, const std::string& userName, const std::string& password) const;
+    void DeinitSystem();
     void GetPropList();
     void GetCrateMap();
 
@@ -86,7 +88,13 @@ private:
 
     int handle;
     bool readOnly;
+    bool connected;
 
+    int systemType;
+    std::string ipAddr;
+    std::string userName;
+    std::string password;
+    
     // Number of slot in the crate
     std::size_t numSlots;
 
